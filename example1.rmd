@@ -1,0 +1,13 @@
+---
+  title: Example
+  author: Asher
+  date: 10/15/24
+  output: pdf_document
+---
+
+# Plot of random y data
+```{r}
+    x <- 0:99
+    y <- rnorm(100)
+    plot(x,y)
+```

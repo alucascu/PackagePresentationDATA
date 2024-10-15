@@ -1,0 +1,285 @@
+---
+title: "Isotropic Muonium"
+author: "Asher Lucas-Cuddeback"
+date: "2024-10-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Muonium
+
+-   Muonium is a pseudo-isotope of hydrogen where we replace the proton with an Anti-muon of the same charge
+```{r example1, echo=FALSE, fig.cap="Muonium atom. For semiconductor purposes, muonium is nearly identical to hydrogen.",fig.align = "center",  out.width = '60%'}
+knitr::include_graphics("Muonium.png")
+```
+-   Muons are very sensitive to the magnetic field in their environment
+-   Begin to precess in the presence of a magnetic field
+```{r larmor, echo=FALSE, fig.cap="Muonium atom precessing in magnetic field. The rate of precession is dependent on the field strength. X vector is intrinsic spin direction and B is the magnetic field direction. This phenomenon is known as larmor precession",fig.align = "center",  out.width = '60%'}
+knitr::include_graphics("larmor.gif")
+```
+-   By tracking that precession we can understand the environment they're in and back into the effects of the muonium in the crystal    
+
+-   This is then implanted into a semiconductor and the observed under different magnetic field strengths
+    -   Semiconductors are crystals that have properties between that of a conductor and insulator
+    -   The places that the muon stops when it is implanted can have very different environments
+```{r crystal, echo=FALSE, fig.cap="Silicon crystal with some sample muon implantation sites. This website will focus on Tetrahedrally Coordinated muonium",fig.align = "center",  out.width = '60%'}
+knitr::include_graphics("crystal.png")
+```
+-   The difference in energy between different states is the variable that predicts most muonium behavior.
+
+# The Hamiltonian
+
+-   We calculate these energy levels by finding the eigenvalues of the "hamiltonian" or total energy operator. For this state, that looks like this:
+
+\begin{equation}
+ H=H^e_{zee}+H^\mu_{zee}+H_{hyperfine}
+\end{equation}
+
+-   $H^i_{zee}$ stands represents the total energy operator of the "zeeman effect" 
+  -  This is the splitting of energy levels of the intrinsic spin states of each particle under a magnetic field
+
+-   $H_{hyperfine}$ is the total energy operator of the Hyperfine interaction. This is the "hyperfine" splitting of the energy levels when two or more particles are coupled.
+
+-   Putting the definitions of these interactions into the equation gives us
+\begin{equation}
+	\label{eq:hamiltonian}
+	H=-\gamma_{\mu}\hbar S_\mu \cdot B + \gamma_{e}\hbar S_{e} \cdot B + S_{\mu} \tilde{A} S_{e}
+\end{equation}
+- Where S_i hides a vector of 3 2x2 matrices that represents the particles spin in each direction. These matrices are called the "Pauli Matrices"
+
+- Combining all these elements gives us:
+\begin{equation}
+	H=\begin{bmatrix}
+		\frac{\hbar(\gamma_e B_z - \gamma_\mu B_z)}{2} + \frac{A}{4} & -\frac{\hbar\gamma_\mu(B_x-iB_y)}{2} & 	\frac{\hbar\gamma_e(B_x-iB_y)}{2} & 0 \\
+		
+		-\frac{\hbar\gamma_\mu(B_x+iB_y)}{2}&-\frac{\hbar(\gamma_e B_z + \gamma_\mu B_z)}{2} + \frac{A}{4} &\frac{A}{2} &\frac{\hbar\gamma_e(B_x-iB_y)}{2} \\
+		
+		\frac{\hbar\gamma_e(B_x+iB_y)}{2}& \frac{A}{2}& \frac{\hbar(\gamma_e B_z + \gamma_\mu B_z)}{2} -\frac{A}{4} &-\frac{\hbar\gamma_\mu(B_x-iB_y)}{2}  \\
+		
+		0 &\frac{\hbar\gamma_e(B_x+iB_y)}{2} & -\frac{\hbar\gamma_\mu(B_x+iB_y)}{2}& -\frac{\hbar(\gamma_e B_z - \gamma_\mu B_z)}{2} + \frac{A}{4} \\
+	\end{bmatrix}
+\end{equation}
+- Where $i$ is the imaginary number, $B_z,B_y,B_z$ are the magnetic field strengths in each direction, $\gamma_{\mu,e}$ are the gyromagnetic ratios for each particle, $A$ is the hyperfine frequency which encodes the strength of the coupling between the electron and muon and $\hbar$ is the reduced planck's constant
+
+# Solving the Hamiltonian
+
+-   There are several methods for solving for the eigenvalues of the hamiltonian. We can do it analytically in this case, but we can also approximate this analytically. 
+
+## Analytic Solutions
+-   Depending on the magnetic field direction, some terms go away. To solve for a magnetic field applied in the direction of the muon's spin, we can drop the $B_x, B_y$ terms. Giving us
+\begin{equation}
+
+	H=\begin{bmatrix}
+		\frac{\hbar(\gamma_e B_z - \gamma_\mu B_z)}{2} + \frac{A}{4} & 0 & 	0 & 0 \\
+		
+		0&-\frac{\hbar(\gamma_e B_z + \gamma_\mu B_z)}{2} + \frac{A}{4} &\frac{A}{2} &0 \\
+		
+		0 & \frac{A}{2}& \frac{\hbar(\gamma_e B_z + \gamma_\mu B_z)}{2} -\frac{A}{4} & 0  \\
+		
+		0 & 0 & 0 & -\frac{\hbar(\gamma_e B_z - \gamma_\mu B_z)}{2} + \frac{A}{4} \\
+	\end{bmatrix}
+\end{equation}
+
+### Kronecker Product
+Those paying attention will note that I said "2x2" matrices. But what I just showed is a 4x4? The explanation is that we know from the fact that each particle has 2 spin states, that there should be four states. The number of eigenvalues we get from a given matrix is determined by its dimensions. We also must preserve the difference between the muon and the electron mathematically. To do this we employ the "Kronecker Product". This operator works as follows:
+\begin{equation}
+	A \otimes B = \left[\begin{array}[]{ccc}
+		A_{11}B_{11} & A_{11}B_{12} & \dots \\
+		A_{11}B_{21} & A_{11}B_{22} &  \\
+		\vdots & & \ddots
+	\end{array}
+	\right]
+\end{equation}
+So, employing it on the the electron spin in the x direction 
+\begin{equation}
+	\sigma_{x} \otimes I = \frac{\hbar}{2}\left[\begin{array}[]{cc}
+		0 & 1 \\
+		1 & 0 \\
+	\end{array}
+	\right]\otimes\left[\begin{array}[]{cc}
+		1 & 0 \\
+		0 & 1 \\
+	\end{array}
+	\right] = \frac{\hbar}{2}\left[\begin{array}[]{cccc}
+		0 & 0 & 1 & 0\\
+		0 & 0 & 0 & 1\\
+		1 & 0 & 0 & 0\\
+		0 & 1 & 0 & 0\\
+	\end{array}
+	\right]
+\end{equation}
+With
+\begin{equation}
+  S^e_x\dot S^\mu_x= (\sigma_x \otimes I)\circ (I \otimes \sigma_x)
+\end{equation}
+### Returning to the Hamiltonain
+-   This block diagonal matrix is easily solvable for its eigenvalues.
+\begin{equation*}
+	E_1=\frac{A}{4}(1+2dx)
+\end{equation*}
+\begin{equation*}
+	E_2=\frac{A}{4}(-1+2\sqrt{1+x^2})
+\end{equation*}
+\begin{equation*}
+	E_3=\frac{A}{4}(1-2dx)
+\end{equation*}
+\begin{equation*}
+	E_4=\frac{A}{4}(-1-2\sqrt{1+x^2})
+\end{equation*}
+Where\begin{equation*}
+	d\equiv \frac{1-\frac{g_\mu \mu^\mu_B}{g_e \mu^e_B}}{1+\frac{g_\mu \mu^\mu_B}{g_e \mu^e_B}} \text{ and } x \equiv \frac{B}{A}(g_\mu \mu^\mu_B+g_e \mu^e_B)
+\end{equation*}
+
+-   The eigenvectors associated with each energy state are:
+\begin{equation*}
+	|1 \rangle = | \uparrow \uparrow \rangle 
+\end{equation*}
+\begin{equation*}
+	|2 \rangle = \sin{\xi}|\uparrow\downarrow\rangle + \cos{\xi}|\downarrow\uparrow\rangle 
+\end{equation*}
+\begin{equation*}
+	|3 \rangle = | \downarrow \downarrow \rangle 
+\end{equation*}
+\begin{equation*}
+	|4 \rangle = \cos{\xi}|\uparrow\downarrow\rangle + \sin{\xi}|\downarrow\uparrow\rangle 
+\end{equation*}
+Where $\cot{2\xi}=\frac{1}{A}(\gamma_e B_z + \gamma_\mu B_z)$. The notation $|\downarrow\uparrow\rangle$ is called bra-ket notation. This specific example only has a "ket". A ket is simply a vector. Physicist use this notation partially because papers would get rather dense without it but also because they are lazy and want to seem smart. In this case, the arrow direction corresponds the the z-compenent of the muon and electron spins respectively.
+
+## Numeric Solutions
+The analytic solution does feel rather nice to do. But, what if things aren't that simple? Or what if we aren't confident enough in our math skills to get us the determinant? The answer lies in numeric approximation. Several algorithms exist which take a matrix and decompose it to its eigenvalues and eigenvectors. Lets walk through a python script to do this, starting with imports and constant declaration.
+```{python, eval = FALSE}
+import numpy as np
+from scipy import constants
+from scipy import linalg
+
+fig, (ax1, ax2) = plt.subplots(1,2)
+
+
+gammaElectron = -135.5837 #MHz/T## MHz/T
+gElectron =  constants.physical_constants["electron g factor"][0]
+elecMagneton =  constants.physical_constants["electron mag. mom."][0]  /(constants.h * np.power(10, 6))#MHz/T
+gE = elecMagneton * gElectron
+hbar = constants.physical_constants["Planck constant in eV/Hz"][0] * np.power(10, 6)    
+
+gammaMuon = -135.5342 #MHz/T 
+gMuon = constants.physical_constants["muon g factor"][0]
+muBohrMagneton = constants.physical_constants["muon mag. mom."][0]  / (constants.h * np.power(10, 6))
+gM  = muBohrMagneton * gMuon
+
+
+
+hyperfineConst = 2007#MHz
+D = 0
+theta = np.pi/2
+
+A = hyperfineConst
+```
+This code uses CODATA's library of physical constants. We next define a function that calculates the hamiltonian for a given magnetic field, theta from the z axis, and dipolar interation. The second two of these are not of great importance for the tetrahedral muonium.
+```{python, eval = FALSE}
+def redefineHamiltonian2(D, B, theta):
+    omegaem = gE * (B[0] - B[1] * 1j)
+    omegamm = gM * (B[0] - B[1] * 1j)
+    omegaep = gE * (B[0] + B[1] * 1j)
+    omegamp = gM * (B[0] + B[1] * 1j)
+    omegaze = gE * B[2]
+    omegazm = gM * B[2]
+    chi = (1/4) * (A + (D/2) * (3 * np.power(np.cos(theta),2) - 1))
+    nu =  2 * A + (D/2) * (1 - 3 * np.power(np.cos(theta),2))
+    sigma = (1/2) * (3/4) * D * np.cos(theta) * np.sin(theta)
+    kappa = (3/2) * D * np.power(np.sin(theta), 2)
+    hamiltonian = np.array([[((omegaze - omegazm) / 2) + chi, sigma - (omegamm / 2), sigma + (omegaem / 2), kappa], [sigma - (omegamp / 2), -((omegaze + omegazm) / 2) - chi, nu, -sigma + (omegaem / 2)], [sigma + (omegaep / 2), nu, ((omegaze + omegazm) / 2) - chi, -sigma - (omegamm / 2)], [kappa, -sigma + (omegaep / 2), - sigma - (omegamp / 2), -((omegaze - omegazm) / 2) - chi]])
+    return hamiltonian
+```
+
+Next is the function that calculates the eigenvalues and vectors of each requested state. 
+```{python, eval = FALSE}
+def stateOne(D, B, theta):
+    energy = np.array([])
+    for i in np.arange(0,np.shape(B)[0]):
+        hamil = redefineHamiltonian2(D, B[i], theta)
+        val, vec = linalg.eigh(hamil, driver= "ev")
+        one = []
+        vec = vec.T
+        nextVal = 0
+        vecRef = vec[0]
+        for i in {0,1,2,3}:  #checking that we haven't traded eigenvectors as decomp arranges them by value. 
+            if(np.allclose(vecRef, vec[i])):
+                one = vec[i]
+        for i in {0,1,2,3}:
+            if(np.allclose(np.dot(hamil, one), val[i]*one)):
+               nextVal = val[i]
+        energy = np.append(energy, nextVal)
+    return energy / hyperfineConst
+```
+These two functions can find the energy splitting with almost no math skills needed! This is important because many hamiltonians are not analytically solvable. As with this example. So, with that found, lets plot these:
+
+### Breit-Rabi Diagrams
+
+
+```{python, echo = FALSE}
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy import constants
+
+plt.rcParams['figure.figsize'] = [(1280 / 144) * .8, (720 / 144) * .8]
+plt.rcParams['text.usetex'] = True
+fig, (ax1, ax2) = plt.subplots(1,2)
+
+T = np.arange(0, .3, .001)
+
+gammaElectron = -135.5837 * np.float_power(10, 6) #MHz/T## MHz/T
+gElectron =  constants.physical_constants["electron g factor"][0]
+elecMagneton =  constants.physical_constants["electron mag. mom."][0] / (constants.h * np.power(10, 6))#MHz/Th
+
+gammaMuon = -135.5342 * np.float_power(10, 6) #MHz/T
+gMuon = constants.physical_constants["muon g factor"][0]
+muBohrMagneton = constants.physical_constants["muon mag. mom."][0]  / (constants.h * np.power(10, 6))
+hyperfineConst = 2007#MHz/T
+
+xConst = (1 / hyperfineConst) * ((gMuon*muBohrMagneton) + (gElectron * elecMagneton))
+
+d = (1 - ((gMuon*muBohrMagneton) / (gElectron * elecMagneton)) ) / (1 + ((gMuon*muBohrMagneton) / (gElectron * elecMagneton)))
+def energy(B, state):
+
+    if(state == 1):
+        return (hyperfineConst / 4) * (1 + (2 * d * B * xConst))
+    elif(state == 2):
+        return (hyperfineConst / 4) * (-1 + 2 * np.sqrt(1 + np.power((B * xConst),2)))
+
+    elif(state == 3):
+        return (hyperfineConst / 4) * (1 - (2 * d * B * xConst))
+
+    else: 
+        return (hyperfineConst / 4) * (-1 - 2 * np.sqrt(1 + np.power((B * xConst),2)))
+state1 = ax1.plot(T, energy(T, 1)/hyperfineConst, label = r'$|E_1\rangle=|\uparrow \uparrow \rangle$')
+state2 = ax1.plot(T, energy(T, 2)/hyperfineConst, label = r'$|E_2\rangle=\sin{\xi}|\uparrow \downarrow \rangle + \cos{\xi}|\downarrow \uparrow \rangle$')
+state3 = ax1.plot(T, energy(T, 3)/hyperfineConst, label = r'$|E_3\rangle=|\downarrow \downarrow$')
+state4 = ax1.plot(T, energy(T, 4)/hyperfineConst, label = r'$|E_4\rangle=\cos{\xi}|\uparrow \downarrow \rangle + \sin{\xi}|\downarrow \downarrow \rangle$')
+#diamag2 = ax.plot(T, energy(T), label = r"$| \uparrow \downarrow \rangle$")
+ax1.set(xlabel = 'Strength of Applied Magnetic Field [T]', ylabel = 'Energy Level')
+title = ax1.set_title(r'Field Dependent Energy Levels for Isotropic Mu$^{0}_{T}$', fontsize = 8)
+ax1.set(xlim = (0,.3), xlabel = 'Strength of Applied Magnetic Field [T]', ylabel = r'Energy of State $[\frac{J}{A_0\hbar}]$')
+
+T = np.arange(.001, 100, .001)
+state1 = ax2.loglog(T, np.abs(energy(T, 1) - energy(T,2)), label = r'$E_{12}$')
+state2 = ax2.loglog(T, np.abs(energy(T, 3) - energy(T,4)), label = r'$E_{34}$', c = 'g')
+ax2.set_yscale('log')
+ax2.set_xscale('log')
+ax2.set(xlim = (0.01,100), ylim = (1, 10000), xlabel = 'Magnetic Field Strength [T]',ylabel = 'Frequency [MHz]')
+title2 = ax2.set_title(r'Field Dependent Splitting Frequencies for Isotropic $Mu^{0}_{T}$', fontsize  = 8)
+ax2.legend()
+ax1.legend()
+ax1.legend(loc=2, prop={'size': 8})
+
+plt.savefig("paramagneticIsotropicMu.png")
+```
+
+
+
+
+
+
+These energy levels would allow a physicist doing MuSR measurements to target certain spin states and cause spontaneous flipping between the states, also known a resonance that we test. 

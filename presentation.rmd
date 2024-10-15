@@ -1,0 +1,84 @@
+---
+title: "Rmarkdown"
+author: "Asher Lucas-Cuddeback"
+date: "2024-10-14"
+output: ioslides_presentation
+---
+
+## Purpose
+
+-   Creating beautiful, professional documents and presentations with ease
+
+## Why Should You Use Rmarkdown?
+
+-   Simplifies workflow by combining computation and writing
+-   Very simple syntax as it uses the markdown language
+-   Can evaluate code chunks in many languages
+-   Out of the box support for many languages through Knitr.
+    -   Python, Shell, SQL, Rcpp, Stan, Julia, C, Fortran, Javascript and CSS
+-   Provides inbuilt support for LaTeX typesetting
+
+## Output Formats
+
+-   PDF Documents
+-   Github Pages
+-   Latex
+-   Context
+-   Presentations
+    -   Multiple backends for different flavors
+-   Word Documents
+
+# Example 1
+
+## Creating and Placing a Graph
+
+-   Create preamble
+-   Create a section heading using "\#"
+-   Encase code of supported language using "`{lang}`"
+-   So, to make a simple heading we do
+
+```{r, eval = FALSE}
+---
+ title: Example 1
+ author: Asher
+ date: 10/15/24
+ output: pdf_document
+---
+# Plot of random y data
+ ```{r}
+ x <- 0:99
+ y <- rnorm(100)
+ plot(x,y)
+```
+
+\`\`\`
+
+## Generated Output
+
+```{r example1, echo=FALSE, fig.cap="Outputted pdf from code",fig.align = "center",  out.width = '60%'}
+knitr::include_graphics("example1.png")
+```
+
+## Example 2
+
+-   This presentation
+
+## Example 3
+
+-   Calculating energy states of a Muon in a magnetic field
+
+## Resources
+
+-   Books:
+    -   R Markdown: The Definitive Guide
+-   Websites:
+    -   <https://bookdown.org/yihui/rmarkdown/>
+    -   <https://rmarkdown.rstudio.com/>
+
+## Alternatives
+
+-   Quarto
+    -   Markdown language that can render Python, Julia, R, and Julia
+    -   Pros:
+        -   VS Code Extension
+        -   
