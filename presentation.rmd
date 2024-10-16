@@ -8,6 +8,9 @@ output: ioslides_presentation
 ## Purpose
 
 -   Creating beautiful, professional documents and presentations with ease
+```{r diamond, echo=FALSE, fig.cap="Example Courtesy of RStudio",fig.align = "center",  out.width = '70%'}
+knitr::include_graphics("diamond.png")
+```
 
 ## Why Should You Use Rmarkdown?
 
@@ -75,6 +78,12 @@ output: ioslides_presentation
 knitr::include_graphics("example1.png")
 ```
 
+## Notes 
+-   LaTeX code is triggered with the standard "\$\$" characters
+-   It should be easy to see how this could be useful
+    -   [Lecture 8 Notes example](lec8.html)
+    -   [Notes Source](https://github.com/alucascu/PackagePresentationDATA/blob/main/lec8.Rmd)
+
 # Example 2
 
 ## This presentation
@@ -85,7 +94,7 @@ knitr::include_graphics("example1.png")
 
 ## Calculating energy states of a Muonium atom in a magnetic field
 
--   [Energy Level Website](example3.html)
+-   [Energy Level Website](example3.html)  [Source](https://github.com/alucascu/PackagePresentationDATA/blob/main/example3.rmd)
 -   Notice that Rmarkdown generates the graph from python code. However, the command 
 
 ```{r,eval=FALSE}
@@ -93,6 +102,7 @@ knitr::include_graphics("example1.png")
 ```
 
 -   in the code block declaration prevents the code from being shown.
+-   Sometimes the LaTeX code is too complicated for Pandoc to render. In this case, the document can be exported as a latex fragment and the rendering job can be passed to it. 
 
 ## Resources
 
@@ -104,7 +114,7 @@ knitr::include_graphics("example1.png")
 -   Cheatsheet
     -   <https://rmarkdown.rstudio.com/lesson-15.HTML>
 -   Vignette
-    -   <https://cran.r-project.org/web/packages/rmarkdown/vignettes/rmarkdown.html>
+    -   <https://cran.r-project.org/web/packages/rmarkdown/vignettes>
 
 ## Alternatives
 
@@ -118,3 +128,9 @@ knitr::include_graphics("example1.png")
         -   Separate software, not a package
         -   Clunky latex integration
         -   Relatively small language support
+        
+## Conclusion
+-   If your purpose for using R is not simply to evaluate data, but to also show your conclusions and computations to others, R Markdown is an extremely powerful tool.
+```{r ocean, echo=FALSE, fig.cap="Example provided by RStudio in RMarkdown guide",fig.align = "center",  out.width = '70%'}
+knitr::include_graphics("ocean.png")
+```

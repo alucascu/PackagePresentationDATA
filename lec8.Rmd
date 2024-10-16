@@ -77,9 +77,9 @@ Now we will give it a test, make sure to explore your data a little bit
 num_el <- 25
 set.seed(20240918)
 a <- runif(num_el, -3, 3)
-#hist(a) #explore
+hist(a) #explore
 b <- runif(num_el,-3, 3) + 1
-#boxplot(a,b) #explore
+boxplot(a,b) #explore
 ```
 
 Now doing bootstrap
