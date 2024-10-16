@@ -17,6 +17,7 @@ output: ioslides_presentation
 -   Out of the box support for many languages through Knitr.
     -   Python, Shell, SQL, Rcpp, Stan, Julia, C, Fortran, Javascript and CSS
 -   Provides inbuilt support for LaTeX typesetting
+    -   Easily confused
 
 ## Output Formats
 
@@ -27,6 +28,15 @@ output: ioslides_presentation
 -   Presentations
     -   Multiple backends for different flavors
 -   Word Documents
+
+## Required Packages
+
+-   RMarkdown imports
+    -   knitr, methods, tinytex, tools, utils, xfun, yaml
+
+    -   bslib, evaluate, fontawesome, htmltools jquerylib, jsonlite
+-   Rmarkdown also requires an installation of Pandoc, a document converter
+    -   Pandoc comes preinstalled with R Studio
 
 # Example 1
 
@@ -47,6 +57,7 @@ output: ioslides_presentation
 ```
 
 ## Headings and Code Block
+
 -   We can create headings create a heading and code block
 
 ```{r, eval = FALSE}
@@ -55,9 +66,8 @@ output: ioslides_presentation
  x <- 0:99
  y <- rnorm(100)
  plot(x,y)
+\```
 ```
-
-\`\`\`
 
 ## Generated Output
 
@@ -76,7 +86,13 @@ knitr::include_graphics("example1.png")
 ## Calculating energy states of a Muonium atom in a magnetic field
 
 -   [Energy Level Website](example3.html)
--   Notice that Rmarkdown generates the graph from python code. However, the command `{r,eval=FALSE}eval = FALSE` prevents the code from being shown.
+-   Notice that Rmarkdown generates the graph from python code. However, the command 
+
+```{r,eval=FALSE}
+  {r, eval = FALSE}
+```
+
+-   in the code block declaration prevents the code from being shown.
 
 ## Resources
 
@@ -86,7 +102,12 @@ knitr::include_graphics("example1.png")
     -   <https://bookdown.org/yihui/rmarkdown/>
     -   <https://rmarkdown.rstudio.com/>
 -   Cheatsheet
-    -   <https://rmarkdown.rstudio.com/lesson-15.HTML> \## Alternatives
+    -   <https://rmarkdown.rstudio.com/lesson-15.HTML>
+-   Vignette
+    -   <https://cran.r-project.org/web/packages/rmarkdown/vignettes/rmarkdown.html>
+
+## Alternatives
+
 -   Quarto
     -   Markdown language that can render Python, Julia, R, and Observable
     -   Pros:
@@ -96,3 +117,4 @@ knitr::include_graphics("example1.png")
     -   Cons
         -   Separate software, not a package
         -   Clunky latex integration
+        -   Relatively small language support

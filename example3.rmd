@@ -282,4 +282,4 @@ plt.savefig("paramagneticIsotropicMu.png")
 
 
 
-These energy levels would allow a physicist doing MuSR measurements to target certain spin states and cause spontaneous flipping between the states, also known a resonance that we test. 
+These energy levels would allow a physicist doing MuSR measurements to target certain spin states and cause spontaneous flipping between the states, also known a resonance that we test. Thanks to Dr. Mengyan for allowing me the use of many of his diagrams.
