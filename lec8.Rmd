@@ -1,0 +1,96 @@
+---
+title: "Lecture 8"
+author: "Asher Lucas-Cuddeback"
+date: "2024-09-18"
+output: html_document
+---
+We have a paired problem: 
+\begin{center}
+$(x_1, y_1),...,(x_n,y_n)$
+\end{center}
+
+\begin{center}
+$d_i = Y_i - X_i$
+\end{center}
+
+\begin{center}
+$D=[d_1, ..., d_n]$
+\end{center}
+
+Let $\theta$ denote the true mean of the distribution of the differences. 
+
+\begin{center}
+$H_o$: $\theta=0$ and $H_a$: $\theta>0$
+\end{center}
+
+
+Assume the test statistic, $T(D)$
+\begin{center}
+$T(D)=\bar{d}=\frac{\sum_{i=1}^{n}(d_i)}{N}$, $d_i=\bar{y}-\bar{x}$
+\end{center}
+Given: $D$ (Dvec)
+For bootstrap testing we must sample under $H_o$
+
+Sample from 
+```{r, eval = FALSE}
+c(d, -d)
+
+n #with replacement
+```
+Repeat B Times
+
+\begin{center}
+$T(c(d,-d))=0=\bar{d}-\bar{d}=0$
+\end{center}
+
+\begin{center}
+$D_1^*, ..., D_B^*$
+\end{center}
+\begin{center} 
+$T(D_1^*), ..., T(D_B^*)$
+\end{center}
+
+Provides an approximation to the null distribution of our test state. 
+
+To determine the effectiveness of the test we need a p-value. The p-value is defined as.
+\begin{center}
+$p=\frac{sum((T(D_i^*)\geq T(D)))}{B}$
+\end{center}
+
+Create a function to determine this
+
+```{r}
+paired_bs_pval <- function(x, y, B = 1000){
+    d <- y - x
+    n <- length(d)
+    dc <- c(d, -d)
+    bs_mat <- matrix(sample(dc, B * n, replace = TRUE), nrow = B)
+    bs_test_statistic <- apply(bs_mat, 1, mean)
+    d_bar <- mean(d)
+    pval <- mean(bs_test_statistic >= d_bar )
+    return(pval)
+}
+```
+
+Now we will give it a test, make sure to explore your data a little bit
+```{r}
+num_el <- 25
+set.seed(20240918)
+a <- runif(num_el, -3, 3)
+#hist(a) #explore
+b <- runif(num_el,-3, 3) + 1
+#boxplot(a,b) #explore
+```
+
+Now doing bootstrap
+```{r}
+print(paired_bs_pval(a,b))
+```
+Comparing against T-Test method
+```{r}
+t.test(a,b,"t")
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
