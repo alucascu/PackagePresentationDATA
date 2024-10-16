@@ -44,6 +44,12 @@ output: ioslides_presentation
  date: 10/15/24
  output: pdf_document
 ---
+```
+
+## Headings and Code Block
+-   We can create headings create a heading and code block
+
+```{r, eval = FALSE}
 # Plot of random y data
  ```{r}
  x <- 0:99
@@ -59,13 +65,18 @@ output: ioslides_presentation
 knitr::include_graphics("example1.png")
 ```
 
-## Example 2
+# Example 2
 
--   This presentation
+## This presentation
 
-## Example 3
+-   [Presentation Source Code](https://github.com/alucascu/PackagePresentationDATA/blob/main/presentation.rmd)
 
--   Calculating energy states of a Muon in a magnetic field
+# Example 3
+
+## Calculating energy states of a Muonium atom in a magnetic field
+
+-   [Energy Level Website](example3.html)
+-   Notice that Rmarkdown generates the graph from python code. However, the command `{r,eval=FALSE}eval = FALSE` prevents the code from being shown.
 
 ## Resources
 
@@ -74,11 +85,14 @@ knitr::include_graphics("example1.png")
 -   Websites:
     -   <https://bookdown.org/yihui/rmarkdown/>
     -   <https://rmarkdown.rstudio.com/>
-
-## Alternatives
-
+-   Cheatsheet
+    -   <https://rmarkdown.rstudio.com/lesson-15.HTML> \## Alternatives
 -   Quarto
-    -   Markdown language that can render Python, Julia, R, and Julia
+    -   Markdown language that can render Python, Julia, R, and Observable
     -   Pros:
         -   VS Code Extension
-        -   
+        -   "Successor to R Markdown"
+        -   Many of the separate packages you use in R markdown are bundled
+    -   Cons
+        -   Separate software, not a package
+        -   Clunky latex integration
